@@ -1,0 +1,12 @@
+# Configuration files
+config.js
+
+# .mp3 files, images
+Public/Assets/
+helperJS/songs_for_soundcloud/
+
+# Test Files
+__tests__/__snapshots__/
+
+node_modules
+
