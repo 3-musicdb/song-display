@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "song-display",
   "version": "",
   "description": "",
   "author": "",
@@ -11,6 +11,7 @@
     "start": "nodemon Server/server.js",
     "build": "webpack -w",
     "seed": "node db/seedCommentsTable.js && node db/seedSongTable.js",
+    "seed-songs": "node db/seedSongTable.js",
     "test": "jest --verbose"
   },
   "dependencies": {

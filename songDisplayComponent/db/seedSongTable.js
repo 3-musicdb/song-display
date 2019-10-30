@@ -19,7 +19,7 @@ connection.connect(function(err) {
 });
 
 // Open seed csv file
-const filePath = '/Users/jonathanolson/Downloads/5cloud Song List - Sheet1.csv';
+const filePath = '/Users/cgzlaptop/Documents/HackReactor/song-display/songDisplayComponent/db/musicdb_songs.csv';
 
 let songs;
 
