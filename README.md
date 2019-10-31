@@ -45,7 +45,7 @@ npm start
 URIs relative to https://localhost:5002/
 
 Method: 
-```javascript
+```
 insertComment
 ```
 HTTP request: 
@@ -56,9 +56,9 @@ Description:
 ```
 Posts the specified comment
 ```
-
 Method: 
-```getSong
+```
+getSong
 ```
 HTTP request: 
 ```
