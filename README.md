@@ -45,44 +45,55 @@ npm start
 URIs relative to https://localhost:5002/
 
 Method: 
-```insertComment
+```javascript
+insertComment
 ```
 HTTP request: 
-```POST /comment
+```
+POST /comment
 ```
 Description: 
-```Posts the specified comment
+```
+Posts the specified comment
 ```
 
 Method: 
 ```getSong
 ```
 HTTP request: 
-```GET /query/getsong/:songId
+```
+GET /query/getsong/:songId
 ```
 Description: 
-```Gets the specified songId’s song information containing song_id, song_name and song_data_url
+```
+Gets the specified songId’s song information containing song_id, song_name and song_data_url
 ```
 
 Method: 
-```updateComment
+```
+updateComment
 ```
 
 HTTP request: 
-```PUT /updateComment/:commentId
+```
+PUT /updateComment/:commentId
 ```
 Description: 
-```Updates the specified comment
+```
+Updates the specified comment
 ```
 
 Method: 
-```deleteComment
+```
+deleteComment
 ```
 HTTP request: 
-```DELETE /deleteComment/:commentId
+```
+DELETE /deleteComment/:commentId
 ```
 Description: 
-```Deletes the specified comment.
+```
+Deletes the specified comment.
 ```
 
 
