@@ -45,28 +45,28 @@ npm start
 URIs relative to https://localhost:5002/
 
 
-Create
+**Create**
 ```
 Method: insertComment
 HTTP request: POST /comment
 Description: Posts the specified comment
 ```
 
-Read
+**Read**
 ```
 Method: getSong
 HTTP request: GET /query/getsong/:songId
 Description: Gets the specified songId’s song information containing song_id, song_name and song_data_url
 ```
 
-Update
+**Update**
 ```
 Method: updateComment
 HTTP request: PUT /updateComment/:commentId
 Description: Updates the specified comment
 ```
 
-Delete
+**Delete**
 ```
 Method: deleteComment
 HTTP request: DELETE /deleteComment/:commentId
