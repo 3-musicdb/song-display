@@ -42,23 +42,61 @@ npm start
 5. Go to `localhost:5001/song_:id/` i.e. http://localhost:5001/song_00082/
 
 
-
- 
-Method
-HTTP request
-Description
 URIs relative to https://localhost:5002/
-insertComment
-POST /comment
-Posts the specified comment
-getSong
-GET /query/getsong/:songId
-Gets the specified songId’s song information containing song_id, song_name and song_data_url
-updateComment
-PUT /updateComment/:commentId
-Updates the specified comment
-deleteComment
-DELETE /deleteComment/:commentId
-Deletes the specified comment.
+
+Method: 
+```insertComment
+```
+HTTP request: 
+```POST /comment
+```
+Description: 
+```Posts the specified comment
+```
+
+Method: 
+```getSong
+```
+HTTP request: 
+```GET /query/getsong/:songId
+```
+Description: 
+```Gets the specified songId’s song information containing song_id, song_name and song_data_url
+```
+
+Method: 
+```updateComment
+```
+
+HTTP request: 
+```PUT /updateComment/:commentId
+```
+Description: 
+```Updates the specified comment
+```
+
+Method: 
+```deleteComment
+```
+HTTP request: 
+```DELETE /deleteComment/:commentId
+```
+Description: 
+```Deletes the specified comment.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
