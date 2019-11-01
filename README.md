@@ -41,37 +41,76 @@ npm start
 
 5. Go to `localhost:5001/song_:id/` i.e. http://localhost:5001/song_00082/
 
-
 URIs relative to https://localhost:5002/
 
+##CRUD APIs:
 
-**Create**
-```
-Method: insertComment
-HTTP request: POST /comment
-Description: Posts the specified comment
-```
+Request Body is accepted in JSON format.
 
-**Read**
-```
-Method: getSong
-HTTP request: GET /query/getsong/:songId
-Description: Gets the specified songId’s song information containing song_id, song_name and song_data_url
-```
+### Create (POST)
 
-**Update**
-```
-Method: updateComment
-HTTP request: PUT /updateComment/:commentId
-Description: Updates the specified comment
-```
+This method inserts a comment record into the database.
+
+`POST /:songId/comments`
+`Method: insertComment`
+#### Body
+
+| Name             | Type          | Description                                                            |
+| ---------------- |:-------------:| :----------------------------------------------------------------------|
+| `id`             | `integer`     | *Required.* User identifier.                                           |
+| `song_id`        | `integer`     | *Required.* Restaurant identifier for the reviewed restaruant.         |
+| `user_id   `     | `integer`     | *Required.* Food rating score for the reviewed restaurant.             |
+| `timestamp`      | `integer`     | *Required.* Service rating score for the reviewed restaurant.          |
+| `comment`        | `VARCHAR(255)`| *Required.* Ambience rating score for the reviewed restaurant.         |
+
+
+### Read (GET)
+
+Gets the specified songId’s song information containing song_id, song_name and song_data_url
+
+`GET /getsong/:songId`
+
+#### Parameters
+
+| Name             | Type          | Description                                                            |
+| ---------------- |:-------------:| :----------------------------------------------------------------------|
+| `songId`         | `integer`     | *Required.* Song identifier for the targeted song.                     |
+
+### Response
+
+| Name               | Type         | Description                                                            |
+| ------------------ |:------------:| :----------------------------------------------------------------------|
+| `songObj     `     | `Object`     | Song Object with waveformdata, date_posted, and song_data_url          |
+| `comments`         | `array`      | array of comments for the related song                                 |
+
+
+### Update (PUT)
+
+Updates the specified comment
+
+`PUT /updateComment/:commentId`
+
+#### Parameters
+
+| Name             | Type          | Description                                                            |
+| ---------------- |:-------------:| :----------------------------------------------------------------------|
+| `commentId`      | `integer`     | *Required.* Comment identifier for the targeted comment to be updated. |
+
+
+#### Delete (DELETE)
+
+Deletes the specified comment.
+
+`DELETE /deleteComment/:commentId`
+
+#### Parameters
+
+| Name             | Type          | Description                                                            |
+| ---------------- |:-------------:| :----------------------------------------------------------------------|
+| `commentId`      | `integer`     | *Required.* Comment identifier for the targeted comment to be deleted. |
 
 **Delete**
-```
-Method: deleteComment
-HTTP request: DELETE /deleteComment/:commentId
-Description: Deletes the specified comment.
-```
+
 
 
 
