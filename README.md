@@ -95,6 +95,7 @@ Updates the specified comment
 | Name             | Type          | Description                                                            |
 | ---------------- |:-------------:| :----------------------------------------------------------------------|
 | `commentId`      | `integer`     | *Required.* Comment identifier for the targeted comment to be updated. |
+| `comment`        | `varchar(255)`| *Required.* updated comment                                            |
 
 
 #### Delete (DELETE)
@@ -108,7 +109,7 @@ Deletes the specified comment.
 | Name             | Type          | Description                                                            |
 | ---------------- |:-------------:| :----------------------------------------------------------------------|
 | `commentId`      | `integer`     | *Required.* Comment identifier for the targeted comment to be deleted. |
-| `comment`        | `varchar(255)`| *Required.* updated comment                                            |
+
 
 
 
