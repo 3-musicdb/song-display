@@ -109,7 +109,6 @@ Deletes the specified comment.
 | ---------------- |:-------------:| :----------------------------------------------------------------------|
 | `commentId`      | `integer`     | *Required.* Comment identifier for the targeted comment to be deleted. |
 
-**Delete**
 
 
 
