@@ -57,11 +57,11 @@ This method inserts a comment record into the database.
 
 | Name             | Type          | Description                                                            |
 | ---------------- |:-------------:| :----------------------------------------------------------------------|
-| `id`             | `integer`     | *Required.* User identifier.                                           |
-| `song_id`        | `integer`     | *Required.* Restaurant identifier for the reviewed restaruant.         |
-| `user_id   `     | `integer`     | *Required.* Food rating score for the reviewed restaurant.             |
-| `timestamp`      | `integer`     | *Required.* Service rating score for the reviewed restaurant.          |
-| `comment`        | `VARCHAR(255)`| *Required.* Ambience rating score for the reviewed restaurant.         |
+| `id`             | `integer`     | *Required.* comment identifier.                                        |
+| `song_id`        | `integer`     | *Required.* song identifier for commented song.                        |
+| `user_id   `     | `integer`     | *Required.* user identifier for the commented song.                    |
+| `timestamp`      | `integer`     | *Required.* Timestamp for the commented song.                          |
+| `comment`        | `VARCHAR(255)`| *Required.* The comment to be posted                                   |
 
 
 ### Read (GET)
