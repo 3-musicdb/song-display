@@ -2,12 +2,13 @@ const mysql = require('mysql');
 const fs = require('fs');
 const csvParser = require('csv-parse');
 const generateComments = require('./commentsCreator');
+const sqlInfo = require('./config/sqlConfig.js');
 
 // Create connection
 let connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'classifieD1',
+  password: sqlInfo.SQL_PASSWORD,
   database: '5cloud_song_display',
 });
 

@@ -9,4 +9,4 @@ helperJS/songs_for_soundcloud/
 __tests__/__snapshots__/
 
 node_modules
-
+sqlConfig.js
