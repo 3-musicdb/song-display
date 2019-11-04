@@ -6,12 +6,13 @@ const csv = require('csv-parser');
 const parse = require("csv-parse");
 const faker = require('faker');
 const Promise = require('bluebird');
+const Uuid = require('cassandra-driver').types.Uuid;
+const id = Uuid.random();
 
 const waveform = path.resolve(__dirname, "waveForm.csv");
 
 // let songData = [];
 const songComments = [];
-let commentId = 0;
 
 
 generateSongComments();
@@ -46,10 +47,17 @@ const processData = (err, data) => {
   const writeUsers = fs.createWriteStream('cassandraData.csv');
   writeUsers.write('id|song_name|artist_name|upload_time|tag|album_art|song_data_url|background_light|background_dark|waveform_data|song_duration|comment_user_name|comment_time_stamp|comment|commentId\n', 'utf8');
 
+  //numComments, numSongs
   data.shift();
-  writeTenMillionSongs(writeUsers, 'utf-8', data, 300, () => {
-    writeThreeHundredMillionComments(writeUsers, 'utf-8', () => {
+  let numSongs = 100000;
+  let numComments = 3000000;
+
+  const start = Date.now();
+  writeTenMillionSongs(writeUsers, 'utf-8', data, numSongs, () => {
+    writeThreeHundredMillionComments(writeUsers, 'utf-8', numComments, numSongs, () => {
       writeUsers.end();
+      const end = Date.now();
+      console.log('total time: ' + (end - start));
     })
   });
 }
@@ -57,6 +65,12 @@ const processData = (err, data) => {
 fs.createReadStream(csvFile)
   .pipe(parse({ delimiter: ',' }, processData));
 
+
+function getRndBias(min, max, bias, influence) {
+  var rnd = Math.random() * (max - min) + min,   // random in range
+      mix = Math.random() * influence;           // random mixer
+  return Math.trunc(rnd * (1 - mix) + bias * mix); // mix full range and bias
+}
 
 function generateSongComments() {
   for (let i = 0; i < 30; i++) {
@@ -88,8 +102,8 @@ function writeTenMillionSongs(writer, encoding, songData, numSongs, callback) {
             data += '"' + songData[i % 96][j] + '"|'; 
           }
         }
-        data += '|||' + commentId + '\n';
-        commentId++;
+        let uuid = Uuid.random();
+        data += '|||' + uuid + '\n';
       }
 
       if (i === numSongs) {
@@ -109,8 +123,9 @@ function writeTenMillionSongs(writer, encoding, songData, numSongs, callback) {
   write();
 }
 
-function writeThreeHundredMillionComments(writer, encoding, callback) {
+function writeThreeHundredMillionComments(writer, encoding, numComments, numSongs, callback) {
   let i = 0;
+  let bias = Math.floor(numSongs * 0.80);
   function write() {
     let ok = true;
     do {
@@ -119,19 +134,19 @@ function writeThreeHundredMillionComments(writer, encoding, callback) {
 
       let user_name = faker.name.findName(); 
       let time_stamp = getRandomInt(360); 
-      let comment = faker.lorem.sentences(getRandomInt(5));
-      let songId = getSkewedRandomInt(200);
-      data += songId + '|||||||||||' + '"' + user_name + '"|' + '"' + time_stamp + '"|' + '"' + comment + '"|' + commentId + '\n';
-      commentId++;
+      let comment = faker.lorem.sentences(getRndBias(1, 5, 1, 1).toFixed(0));
+      let songId = getRndBias(1, numSongs, bias, .90);
+      let uuid = Uuid.random();
+      data += songId + '|||||||||||' + '"' + user_name + '"|' + '"' + time_stamp + '"|' + '"' + comment + '"|' + uuid + '\n';
 
-      if (i === 100) {
+      if (i === numComments) {
         writer.write(data, encoding, callback);
       } else {
         // see if we should continue, or wait
         // don't pass the callback, because we're not done yet.
         ok = writer.write(data, encoding);
       }
-    } while (i < 100 && ok);
+    } while (i < numComments && ok);
     if (i > 0) {
       // had to stop early!
       // write some more once it drains
@@ -140,8 +155,6 @@ function writeThreeHundredMillionComments(writer, encoding, callback) {
   }
   write();
 }
-
-  
 
 
 
@@ -215,11 +228,7 @@ function writeThreeHundredMillionComments(writer, encoding, callback) {
 
 
 
-// function getRndBias(min, max, bias, influence) {
-//     var rnd = Math.random() * (max - min) + min,   // random in range
-//         mix = Math.random() * influence;           // random mixer
-//     return rnd * (1 - mix) + bias * mix;           // mix full range and bias
-//  }
+
 //  var a = "";
 //  for(var i = 0; i < 300000000; i++){
 //  a = a.concat(",").concat(getRndBias(1, 500, 8000000, .90).toFixed(0));
@@ -229,4 +238,3 @@ function writeThreeHundredMillionComments(writer, encoding, callback) {
 // songId = getRndBias(1, 500, 8000000, .90);
 
 //comments
-//getRndBias(1, 5, 1, 1).toFixed(0)), .5)
