@@ -33,7 +33,7 @@ CREATE TABLE songs (
     background_dark VARCHAR,
     waveform_data TEXT,
     song_duration INT,
-    commentId INT,
+    commentId uuid,
     comment_user_name VARCHAR,
     comment_time_stamp INT,
     comment TEXT,
