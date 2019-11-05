@@ -1,10 +1,17 @@
 const fs = require("fs");
 const path = require('path');
 const csvFile = path.resolve(__dirname, "musicdb.csv");
+// const csvFile = path.resolve(__dirname, "musicdbNowaveform.csv");
 const csv = require('csv-parser');
 const parse = require("csv-parse");
 const faker = require('faker');
+const Promise = require('bluebird');
 const Uuid = require('cassandra-driver').types.Uuid;
+
+
+generateArtistUserCsv('postgresArtists.csv', 'artist_name');
+generateArtistUserCsv('postgresUsers.csv', 'username');
+
 
 const processData = (err, data) => {
   if (err) {
@@ -17,8 +24,8 @@ const processData = (err, data) => {
 
   //numComments, numSongs
   data.shift();
-  let numSongs = 10000000;
-  let numComments = 150000000;
+  // let numSongs = 10000000;
+  // let numComments = 150000000;
 
   const start = Date.now();
   writeTenMillionSongs(writeUsers, 'utf-8', data, numSongs, () => {
@@ -30,9 +37,9 @@ const processData = (err, data) => {
   });
 }
 
-fs.createReadStream(csvFile)
-  .pipe(parse({ delimiter: ',' }, processData));
 
+// fs.createReadStream(csvFile)
+//   .pipe(parse({ delimiter: ',' }, processData));
 
 function getRndBias(min, max, bias, influence) {
   var rnd = Math.random() * (max - min) + min,   // random in range
@@ -42,6 +49,49 @@ function getRndBias(min, max, bias, influence) {
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
+}
+
+
+function generateArtistUserCsv(filename, headerString) {
+  const writeUsers = fs.createWriteStream(filename);
+  writeUsers.write(headerString + '\n', 'utf8');
+
+  const start = Date.now();
+  let numArtistsUsers = 10000;
+  writeArtistsOrUsers(writeUsers, 'utf-8', numArtistsUsers, () => {
+    writeUsers.end();
+    const end = Date.now();
+    console.log('total time: ' + (end - start));
+  });
+}
+
+function writeArtistsOrUsers(writer, encoding, numArtists, callback) {
+  let i = 0;
+  let bias = Math.floor(numSongs * 0.80);
+  function write() {
+    let ok = true;
+    do {
+      i++;
+      let data = '';
+
+      let artist = faker.name.findName(); 
+      data += artist + '\n';
+
+      if (i === numArtists) {
+        writer.write(data, encoding, callback);
+      } else {
+        // see if we should continue, or wait
+        // don't pass the callback, because we're not done yet.
+        ok = writer.write(data, encoding);
+      }
+    } while (i < numArtists && ok);
+    if (i > 0) {
+      // had to stop early!
+      // write some more once it drains
+      writer.once('drain', write);
+    }               
+  }
+  write();
 }
 
 function writeTenMillionSongs(writer, encoding, songData, numSongs, callback) {
