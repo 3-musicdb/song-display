@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS reservations;
-CREATE DATABASE reservations;
+DROP DATABASE IF EXISTS songdisplay;
+CREATE DATABASE songdisplay;
 
-use reservations
+\c songdisplay;
 
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS artists;
@@ -10,40 +10,39 @@ DROP TABLE IF EXISTS comments;
 
 
 CREATE TABLE users (
-  userID int SERIAL,
+  userID SERIAL,
   username VARCHAR(50),
   PRIMARY KEY (userID)
 );
 
 CREATE TABLE artists (
-  artistId int SERIAL,
+  artistId SERIAL,
   artist_name VARCHAR(50),
   PRIMARY KEY (artistId)
 );
 
 CREATE TABLE songs (
-    Id INT,
+    Id SERIAL,
     song_name VARCHAR(255),
-    artist_id INT, //references artistid
+    artist_id INT,
     upload_time BIGINT,
     tag VARCHAR(255),
-    song_art_url VARCHAR(255),
-    song_data_url VARCHAR(255),
     album_art VARCHAR(255),
+    song_data_url VARCHAR(255),
     background_light VARCHAR(255),
     background_dark VARCHAR(255),
-    waveform_data BLOB,
+    waveform_data TEXT,
     song_duration INT,
 
-    PRIMARY KEY (Id)
+    PRIMARY KEY (Id),
 
     FOREIGN KEY(artist_id)
-      REFERENCES artists(artistId),
+      REFERENCES artists(artistId)
 );
 
 
 CREATE TABLE comments (
-  commentId int SERIAL,
+  commentId SERIAL,
   song_id int,
   user_id int,
   time_stamp int,
@@ -56,4 +55,4 @@ CREATE TABLE comments (
 
   FOREIGN KEY (user_id)
     REFERENCES users(userID)
-)
+);
