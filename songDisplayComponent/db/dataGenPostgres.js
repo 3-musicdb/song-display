@@ -9,37 +9,53 @@ const Promise = require('bluebird');
 const Uuid = require('cassandra-driver').types.Uuid;
 
 
-generateArtistUserCsv('postgresArtists.csv', 'artist_name');
-generateArtistUserCsv('postgresUsers.csv', 'username');
+let numSongs = 10000;
+let numComments = 10000;
+let numArtists = 10000;
+let numUsers = 10000;
+generateArtistUserCsv('postgresArtists.csv', 'artist_name', numArtists);
+generateArtistUserCsv('postgresUsers.csv', 'username', numUsers);
 
+
+generateCommentsCsv('postgresComments.csv', numComments, numSongs);
 
 const processData = (err, data) => {
   if (err) {
     console.log(`An error was encountered: ${err}`);
     return;
   }
-
-  const writeUsers = fs.createWriteStream('cassandraData.csv');
-  writeUsers.write('id|song_name|artist_name|upload_time|tag|album_art|song_data_url|background_light|background_dark|waveform_data|song_duration|comment_user_name|comment_time_stamp|comment|commentId\n', 'utf8');
+  const writeUsers = fs.createWriteStream('postgresSongs.csv');
+  writeUsers.write('song_name|artist_id|upload_time|tag|album_art|song_data_url|background_light|background_dark|waveform_data|song_duration\n', 'utf8');
 
   //numComments, numSongs
   data.shift();
-  // let numSongs = 10000000;
-  // let numComments = 150000000;
+
 
   const start = Date.now();
-  writeTenMillionSongs(writeUsers, 'utf-8', data, numSongs, () => {
-    writeThreeHundredMillionComments(writeUsers, 'utf-8', numComments, numSongs, () => {
-      writeUsers.end();
-      const end = Date.now();
-      console.log('total time: ' + (end - start));
-    })
+  writeTenMillionSongs(writeUsers, 'utf-8', data, numSongs, numArtists, () => {
+    writeUsers.end();
+    const end = Date.now();
+    console.log('Songs total time: ' + (end - start));
   });
 }
 
+fs.createReadStream(csvFile)
+  .pipe(parse({ delimiter: ',' }, processData));
 
-// fs.createReadStream(csvFile)
-//   .pipe(parse({ delimiter: ',' }, processData));
+
+
+function generateCommentsCsv(filename, numComments, numSongs) {
+  let headerString = 'song_id|user_id|time_stamp|comment\n';
+  const writeUsers = fs.createWriteStream(filename);
+  writeUsers.write(headerString, 'utf8');
+
+  const start = Date.now();
+  writeThreeHundredMillionComments(writeUsers, 'utf-8', numComments, numSongs, numUsers, () => {
+    writeUsers.end();
+    const end = Date.now();
+    console.log('Comments total time: ' + (end - start));
+  })
+}
 
 function getRndBias(min, max, bias, influence) {
   var rnd = Math.random() * (max - min) + min,   // random in range
@@ -52,30 +68,28 @@ function getRandomInt(max) {
 }
 
 
-function generateArtistUserCsv(filename, headerString) {
+function generateArtistUserCsv(filename, headerString, numArtistsUsers) {
   const writeUsers = fs.createWriteStream(filename);
   writeUsers.write(headerString + '\n', 'utf8');
 
   const start = Date.now();
-  let numArtistsUsers = 10000;
   writeArtistsOrUsers(writeUsers, 'utf-8', numArtistsUsers, () => {
     writeUsers.end();
     const end = Date.now();
-    console.log('total time: ' + (end - start));
+    console.log(filename + ' total time: ' + (end - start));
   });
 }
 
 function writeArtistsOrUsers(writer, encoding, numArtists, callback) {
   let i = 0;
-  let bias = Math.floor(numSongs * 0.80);
   function write() {
     let ok = true;
     do {
       i++;
       let data = '';
 
-      let artist = faker.name.findName(); 
-      data += artist + '\n';
+      let artistUser = faker.name.findName(); 
+      data += artistUser + '\n';
 
       if (i === numArtists) {
         writer.write(data, encoding, callback);
@@ -94,24 +108,35 @@ function writeArtistsOrUsers(writer, encoding, numArtists, callback) {
   write();
 }
 
-function writeTenMillionSongs(writer, encoding, songData, numSongs, callback) {
+function writeTenMillionSongs(writer, encoding, songData, numSongs, numArtists, callback) {
   let i = 0;
   function write() {
     let ok = true;
     do {
       i++;
-      let data = '' + i + '|';
+      let data = '';
 
+
+      
       if(songData[i % 96]) {
         for (let j = 0; j < songData[i % 96].length; j++) {
-          if(Number(songData[i % 96][j])) {
-            data += songData[i % 96][j] + '|';
+          if(j === 1) {
+            data += getRandomInt(numArtists) + 1 + '|';
+          } else if (j === songData[i % 96].length - 1) {
+            if(Number(songData[i % 96][j])) {
+              data += songData[i % 96][j];
+            } else {
+              data += '"' + songData[i % 96][j]; 
+            }
           } else {
-            data += '"' + songData[i % 96][j] + '"|'; 
+            if(Number(songData[i % 96][j])) {
+              data += songData[i % 96][j] + '|';
+            } else {
+              data += '"' + songData[i % 96][j] + '"|'; 
+            }
           }
         }
-        let uuid = Uuid.random();
-        data += '|||' + uuid + '\n';
+        data += '\n';
       }
 
       if (i === numSongs) {
@@ -131,7 +156,7 @@ function writeTenMillionSongs(writer, encoding, songData, numSongs, callback) {
   write();
 }
 
-function writeThreeHundredMillionComments(writer, encoding, numComments, numSongs, callback) {
+function writeThreeHundredMillionComments(writer, encoding, numComments, numSongs, numUsers, callback) {
   let i = 0;
   let bias = Math.floor(numSongs * 0.80);
   function write() {
@@ -140,12 +165,18 @@ function writeThreeHundredMillionComments(writer, encoding, numComments, numSong
       i++;
       let data = '';
 
-      let user_name = faker.name.findName(); 
+      /*
+        commentId SERIAL,
+        song_id int,
+        user_id int,
+        time_stamp int,
+        comment TEXT,
+      */
+      let userid = getRandomInt(numUsers) + 1; 
       let time_stamp = getRandomInt(360); 
       let comment = faker.lorem.sentences(getRndBias(1, 5, 1, 1).toFixed(0));
       let songId = getRndBias(1, numSongs, bias, .90);
-      let uuid = Uuid.random();
-      data += songId + '|||||||||||' + '"' + user_name + '"|' + '"' + time_stamp + '"|' + '"' + comment + '"|' + uuid + '\n';
+      data += songId + '|' + '' + userid + '|' + '' + time_stamp + '|' + '"' + comment + '"\n';
 
       if (i === numComments) {
         writer.write(data, encoding, callback);
