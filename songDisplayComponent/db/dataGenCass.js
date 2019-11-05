@@ -7,7 +7,6 @@ const parse = require("csv-parse");
 const faker = require('faker');
 const Promise = require('bluebird');
 const Uuid = require('cassandra-driver').types.Uuid;
-const id = Uuid.random();
 
 const waveform = path.resolve(__dirname, "waveForm.csv");
 
@@ -49,8 +48,8 @@ const processData = (err, data) => {
 
   //numComments, numSongs
   data.shift();
-  let numSongs = 100000;
-  let numComments = 3000000;
+  let numSongs = 10000000;
+  let numComments = 150000000;
 
   const start = Date.now();
   writeTenMillionSongs(writeUsers, 'utf-8', data, numSongs, () => {
@@ -61,6 +60,19 @@ const processData = (err, data) => {
     })
   });
 }
+
+
+// const processJson = (err, data) => {
+//   for (let i = 0; i < data.length; i++) {
+//     if (err) {
+//       console.log(`An error was encountered: ${err}`);
+//       return;
+//     }
+//     let fileName = 'waveform-' + (i + 1) + '.json';
+//     const writeUsers = fs.createWriteStream(fileName);
+//     writeUsers.write(data[i][8], 'utf8', () => writeUsers.end());
+//   }
+// }
 
 fs.createReadStream(csvFile)
   .pipe(parse({ delimiter: ',' }, processData));
@@ -82,9 +94,9 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-function getSkewedRandomInt(max) {
-  return Math.floor(Math.pow(Math.random(), 4) * (max - 1)) + 1;
-}
+// function getSkewedRandomInt(max) {
+//   return Math.floor(Math.pow(Math.random(), 4) * (max - 1)) + 1;
+// }
 
 function writeTenMillionSongs(writer, encoding, songData, numSongs, callback) {
   let i = 0;
@@ -155,86 +167,3 @@ function writeThreeHundredMillionComments(writer, encoding, numComments, numSong
   }
   write();
 }
-
-
-
-
-// const processWaveform = (err, data) => {
-//   if (err) {
-//     console.log(`An error was encountered: ${err}`);
-//     return;
-//   }
-//   // console.log(data);
-
-//   // console.log(JSON.parse(data[1]));
-//   for (let i = 1; i < data.length; i++) {
-//     let waveForm = JSON.parse(data[i])
-//     for (let key in waveForm) {
-//       for (let j = 0; j < waveForm[key].length; j++) {
-//         waveForm[key][j] = Number(waveForm[key][j].toFixed(3));
-//         // data[i][key][j] = Number(data[i][key][j].toFixed(3));
-//       }
-//     }
-//     data[i] = JSON.stringify(waveForm);
-//   }
-
-//   console.log(data);
-
-//   const writeUsers = fs.createWriteStream('users.csv');
-//   writeUsers.write('id,\n', 'utf8');
-
-//   writeTenMillionUsers(writeUsers, 'utf-8',data, () => {
-//     writeUsers.end();
-//   });
-// }
-
-// fs.createReadStream(waveform)
-//   .pipe(parse({ delimiter: ',' }, processWaveform));
-
-
-
-  // function writeTenMillionUsers(writer, encoding, callback) {
-  //   let i = 10000000;
-  //   let id = 0;
-  //   function write() {
-  //     let ok = true;
-  //     do {
-  //       i -= 1;
-  //       id += 1;
-  //       const username = faker.internet.userName();
-  //       const avatar = faker.image.avatar();
-  //       const data = `${id},${username},${avatar}\n`;
-  //       if (i === 0) {
-  //         writer.write(data, encoding, callback);
-  //       } else {
-  //         // see if we should continue, or wait
-  //         // don't pass the callback, because we're not done yet.
-  //         ok = writer.write(data, encoding);
-  //       }
-  //     } while (i > 0 && ok);
-  //     if (i > 0) {
-  //       // had to stop early!
-  //       // write some more once it drains
-  //       writer.once('drain', write);
-  //     }               
-  //   }
-  // write();
-  // }
-
-  // writeTenMillionUsers(writeUsers, 'utf-8', () => {
-  //   writeUsers.end();
-  // });
-
-
-
-
-
-//  var a = "";
-//  for(var i = 0; i < 300000000; i++){
-//  a = a.concat(",").concat(getRndBias(1, 500, 8000000, .90).toFixed(0));
-//  }
-//  console.log(a);
-
-// songId = getRndBias(1, 500, 8000000, .90);
-
-//comments
