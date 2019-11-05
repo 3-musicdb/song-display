@@ -11,3 +11,7 @@ __tests__/__snapshots__/
 node_modules
 sqlConfig.js
 cassandraData.csv
+postgresArtists.csv
+postgresComments.csv
+postgresSongs.csv
+postgresUsers.csv
