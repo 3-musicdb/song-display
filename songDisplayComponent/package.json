@@ -13,8 +13,10 @@
     "seed": "node db/seedCommentsTable.js && node db/seedSongTable.js",
     "seed-songs": "node db/seedSongTable.js",
     "test": "jest --verbose",
-    "cassSeed": "node ./db/dataGenCass.js",
-    "postgresSeed": "node ./db/dataGenPostgres.js"
+    "cassGen": "node ./db/dataGenCass.js",
+    "postgresGen": "node ./db/dataGenPostgres.js",
+    "postgresSeed": "node ./db/seedPostgres.js",
+    "testMe": "node ./db/db.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -28,6 +30,7 @@
     "image-webpack-loader": "^6.0.0",
     "mysql": "^2.17.1",
     "nodemon": "^1.19.4",
+    "pg": "^7.12.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "style-loader": "^1.0.0"

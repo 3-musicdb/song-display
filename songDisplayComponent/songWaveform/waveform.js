@@ -4,7 +4,6 @@
 
 const waveform = path.resolve(__dirname, "waveForm.csv");
 
-
 const writeUsers = fs.createWriteStream('waveForm.csv');
 
 writeWaveformData(writeUsers, 'utf-8', numComments, numSongs, () => {

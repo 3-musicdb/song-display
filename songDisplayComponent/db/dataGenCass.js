@@ -18,7 +18,7 @@ const processData = (err, data) => {
   //numComments, numSongs
   data.shift();
   let numSongs = 10000000;
-  let numComments = 150000000;
+  let numComments = 70000000;
 
   const start = Date.now();
   writeTenMillionSongs(writeUsers, 'utf-8', data, numSongs, () => {
@@ -93,7 +93,7 @@ function writeThreeHundredMillionComments(writer, encoding, numComments, numSong
       let user_name = faker.name.findName(); 
       let time_stamp = getRandomInt(360); 
       let comment = faker.lorem.sentences(getRndBias(1, 5, 1, 1).toFixed(0));
-      let songId = getRndBias(1, numSongs, bias, .90);
+      let songId = getRndBias(1, numSongs, bias, .95);
       let uuid = Uuid.random();
       data += songId + '|||||||||||' + '"' + user_name + '"|' + '"' + time_stamp + '"|' + '"' + comment + '"|' + uuid + '\n';
 

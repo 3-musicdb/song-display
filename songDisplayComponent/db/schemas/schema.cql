@@ -4,10 +4,6 @@ CREATE KEYSPACE songdisplay WITH replication = {'class': 'SimpleStrategy', 'repl
 
 USE songdisplay;
 
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS artists;
-DROP TABLE IF EXISTS songs;
-
 CREATE TABLE users (
     id uuid,
     username VARCHAR,

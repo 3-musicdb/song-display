@@ -9,8 +9,8 @@ const Promise = require('bluebird');
 const Uuid = require('cassandra-driver').types.Uuid;
 
 
-let numSongs = 10000;
-let numComments = 10000;
+let numSongs = 10000000;
+let numComments = 70000000;
 let numArtists = 10000;
 let numUsers = 10000;
 generateArtistUserCsv('postgresArtists.csv', 'artist_name', numArtists);
@@ -175,7 +175,7 @@ function writeThreeHundredMillionComments(writer, encoding, numComments, numSong
       let userid = getRandomInt(numUsers) + 1; 
       let time_stamp = getRandomInt(360); 
       let comment = faker.lorem.sentences(getRndBias(1, 5, 1, 1).toFixed(0));
-      let songId = getRndBias(1, numSongs, bias, .90);
+      let songId = getRndBias(1, numSongs, bias, .95);
       data += songId + '|' + '' + userid + '|' + '' + time_stamp + '|' + '"' + comment + '"\n';
 
       if (i === numComments) {
