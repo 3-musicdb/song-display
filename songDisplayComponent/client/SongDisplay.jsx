@@ -138,6 +138,7 @@ export default class SongDisplay extends React.Component {
     axios
       .get(`http://localhost:5001/query/getSong/${this.props.song_id}`)
       .then((response) => {
+        console.log(response);
         const songObj = response.data[0];
         songObj.comments = response.data[1];
         // Parse waveform data, calculate relative date posted
