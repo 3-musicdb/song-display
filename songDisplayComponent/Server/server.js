@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+require('newrelic');
 const express = require('express');
 const path = require('path');
 const db = require('../db/Model');
@@ -36,9 +37,15 @@ function shouldCompress(req, res) {
 app.use('/:song_id', express.static(path.join(__dirname, '../public/')));
 
 // Get specific song
-app.get('/query/getSong/:song_id', (req, res) => {
+app.get('/getSong/:song_id', (req, res) => {
   const song_id = req.params.song_id;
   db.getSong(song_id, res);
+});
+
+app.post('/postComment/', (req, res, next) => {
+  // const song_id = req.params.song_id;
+  //songid, username, comment
+  db.insertComments(9999998, "james perkins", "YAYYYY is this working?", res);
 });
 
 // Return stringified JSON of all 100 song information objects from mysql
