@@ -12,9 +12,7 @@ module.exports.getSong = (song_id, res) => {
 
   client.execute('SELECT * FROM songs WHERE id = ' + song_id)
   .then(result => {
-    // console.log(result.rows);
     let result1 = [];
-    // console.log(result1);
     let result2 = [];
     for (let i = 0; i < result.rows.length; i++) {
       if(result.rows[i].song_data_url !== null) {
