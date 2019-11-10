@@ -42,6 +42,7 @@ app.use('/:song_id', express.static(path.join(__dirname, '../public/')));
 
 // Get specific song
 app.get('/getSong/:song_id', (req, res) => {
+  // console.log('at the component');
   const song_id = req.params.song_id;
   db.getSong(song_id, res);
 });
