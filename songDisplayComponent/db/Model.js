@@ -16,9 +16,22 @@ module.exports.getSong = (song_id, res) => {
     let result2 = [];
     for (let i = 0; i < result.rows.length; i++) {
       if(result.rows[i].song_data_url !== null) {
+        delete result.rows[i].comment;
+        delete result.rows[i].comment_time_stamp;
+        delete result.rows[i].comment_user_name;
+        delete result.rows[i].commentid;
         result1.push(result.rows[i]);
       } else {
-        result2.push(result.rows[i]);
+        let comment = {}
+        if(result.rows[i]) {
+           comment = {
+            commentid : result.rows[i].commentid,
+            comment_user_name : result.rows[i].comment_user_name,
+            comment_time_stamp : result.rows[i].comment_time_stamp,
+            comment : result.rows[i].comment
+          }
+        }
+        result2.push(comment);
       }
     }
 
@@ -48,11 +61,12 @@ module.exports.insertComments = (songid, username, comment, res) => {
 
   client.execute("INSERT into songs ( id, commentId, comment_user_name, comment_time_stamp, comment) values (" + songid + ", now(), '" + username + "', 300, '" + comment + "')")
   .then(result => {
-    console.log('inserted row');
+    // console.log('inserted row');
     res.sendStatus(200);
   })
   .catch(err => {
-    console.log(err);
+    res.send(err);
+    // console.log(err);
   });
 
   // const query = `INSERT INTO comments (song_id, user_name, time_stamp, comment) values ${comments}`;

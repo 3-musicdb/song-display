@@ -1,0 +1,52 @@
+
+#proxy {
+  display: grid; 
+  grid-template-columns: 1000px auto;
+  grid-template-rows: 300px auto;
+
+  overflow-y:scroll; 
+  position:relative;
+  height: 1000px;
+  
+}
+#reservationsContainer {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end:3;
+  display: grid;
+  grid-template-rows: 70px auto;
+  
+  /* z-index: 1; */
+  position: sticky;
+  /* bottom: 300px; */
+  top: 300px;
+  right: 50px;
+
+}
+
+#Reservations {
+  position: relative;
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+}
+#Ratings {
+  z-index: -1;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end:2;
+  
+  padding-right: 100px;
+  padding-left: 100px;
+  padding-bottom: 100px;
+}
+
+#Gallery {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 1;
+  grid-column-end:3;
+  /* z-index:1; */
+}

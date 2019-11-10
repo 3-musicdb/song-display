@@ -4,8 +4,12 @@ const express = require('express');
 const path = require('path');
 const db = require('../db/Model');
 const compression = require('compression');
+const morgan = require('morgan');
 
 const app = express();
+
+app.use(express.json());
+// app.use(morgan('dev'));
 
 // Sidebar is on port 5000; use 5001
 const port = 5001;
@@ -45,7 +49,8 @@ app.get('/getSong/:song_id', (req, res) => {
 app.post('/postComment/', (req, res, next) => {
   // const song_id = req.params.song_id;
   //songid, username, comment
-  db.insertComments(9999998, "james perkins", "YAYYYY is this working?", res);
+  // console.log(req.body);
+  db.insertComments(req.body.id, req.body.username, req.body.comment, res);
 });
 
 // Return stringified JSON of all 100 song information objects from mysql
