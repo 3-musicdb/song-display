@@ -1,4 +1,6 @@
 /* eslint-disable camelcase */
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 const styles = require('./style/SongDisplay.module.css');
 

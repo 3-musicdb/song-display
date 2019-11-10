@@ -136,7 +136,7 @@ export default class SongDisplay extends React.Component {
   // Get specific song for loaded page
   getSong() {
     axios
-      .get(`http://localhost:5001/getSong/${this.props.song_id}`)
+      .get(`/getSong/${this.props.song_id}`)
       .then((response) => {
         // console.log(response);
         const songObj = response.data[0];

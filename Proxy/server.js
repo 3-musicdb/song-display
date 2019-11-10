@@ -4,6 +4,14 @@ const path = require('path');
 
 app.use(express.json());
 
-app.use('/:propertyId', express.static(path.join(__dirname, './public')));
+app.use('/:songid', express.static(path.join(__dirname, './public')));
+
+app.get('/getSong/:song_id', (req, res) => {
+  const song_id = req.params.song_id;
+  let wholePath = window.location.origin+window.location.pathname;
+  let pathArray = wholePath.split(':');
+  let baseUrl = 'http:' + pathArray[1];
+  res.redirect(301, `${baseUrl}/getSong/${song_id}`);
+});
 
 app.listen(3010);

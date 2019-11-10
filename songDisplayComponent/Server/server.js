@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const db = require('../db/Model');
 const compression = require('compression');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 
 const app = express();
 
