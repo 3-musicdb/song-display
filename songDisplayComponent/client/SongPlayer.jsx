@@ -1,4 +1,6 @@
 import UserComment from './UserComment';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 const styles = require('./style/SongDisplay.module.css');
 

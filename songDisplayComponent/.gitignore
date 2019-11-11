@@ -9,6 +9,7 @@ helperJS/songs_for_soundcloud/
 __tests__/__snapshots__/
 
 node_modules
+../Proxy/node_modules
 sqlConfig.js
 cassandraData.csv
 postgresArtists.csv

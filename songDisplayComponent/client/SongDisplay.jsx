@@ -136,15 +136,18 @@ export default class SongDisplay extends React.Component {
   // Get specific song for loaded page
   getSong() {
     axios
-      .get(`http://localhost:5001/query/getSong/${this.props.song_id}`)
+      .get(`/getSong/${this.props.song_id}`)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         const songObj = response.data[0];
+        // console.log(songObj);
         songObj.comments = response.data[1];
+        // console.log(songObj.waveform_data);
         // Parse waveform data, calculate relative date posted
-        songObj.waveform_data = JSON.parse(songObj.waveform_data);
-        songObj.date_posted = calculateDatePosted(songObj.upload_time);
+        // songObj.waveform_data = JSON.parse(songObj.waveform_data);
+        // songObj.date_posted = calculateDatePosted(songObj.upload_time);
         const songAudio = new Audio(songObj.song_data_url);
+
         // Set to state then do the same for the rest of the songs
         this.setState(
           {
@@ -170,6 +173,60 @@ export default class SongDisplay extends React.Component {
         console.log(err);
       });
   }
+  // getSong() {
+  //   axios
+  //     .get(`http://localhost:5001/getSong/${this.props.song_id}`)
+  //     .then((response) => {
+      
+  //       // console.log(response);
+  //       const songObj = response.data[0];
+  //       console.log(songObj);
+  //       songObj.comments = response.data[1];
+  //       console.log(songObj.waveform_data);
+  //       // Parse waveform data, calculate relative date posted
+  //       // songObj.waveform_data = JSON.parse(songObj.waveform_data);
+  //       // songObj.date_posted = calculateDatePosted(songObj.upload_time);
+  //       const songAudio = new Audio(songObj.song_data_url);
+
+  //       return axios.get(songObj.waveform_data, {headers: {'Access-Control-Allow-Origin': '*',
+  //       'Content-Type': 'application/json',
+  //       'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'
+  //                                                       }})
+  //                   .then((res) => {
+  //                     songObj.waveform_data = res;
+  //                     console.log(songObj);
+  //                     console.log(songAudio);
+  //                     return [songObj, songAudio];
+  //                   })
+  //                   .catch(err => console.log(err));
+  //     })
+  //     .then((result) => {
+  //       // Set to state then do the same for the rest of the songs
+  //       console.log('hello ' + result);
+  //       this.setState(
+  //         {
+  //           currentSongObj: result[0],
+  //           currentSongAudio: result[1],
+  //         },
+  //         () => {
+  //           this.state.currentSongAudio.addEventListener(
+  //             'loadedmetadata',
+  //             () => {
+  //               // Calculate total length as string MM:SS
+  //               const currentSongObj = this.state.currentSongObj;
+  //               currentSongObj.durationMMSS = calculateMMSS(
+  //                 this.state.currentSongAudio.duration
+  //               );
+  //               this.setState({currentSongObj});
+  //             }
+  //           );
+  //         }
+  //       );
+  //     }) 
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
   // Get one song loaded from AWS
   backgroundGetThreeSongs() {
