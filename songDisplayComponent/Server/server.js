@@ -37,6 +37,10 @@ function shouldCompress(req, res) {
   return compression.filter(req, res);
 }
 
+app.get('/loaderio-3000a7fe72c6414b3a1eb2ee85ccff2c/', (req, res) => {
+  res.sendFile('/home/ec2-user/song-display/songDisplayComponent/public/loaderio-3000a7fe72c6414b3a1eb2ee85ccff2c.txt');
+});
+
 // Serve the static index file from the React app
 app.use('/:song_id', express.static(path.join(__dirname, '../public/')));
 

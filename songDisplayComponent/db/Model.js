@@ -4,7 +4,7 @@ const db = require('./db');
 /* eslint-disable camelcase */
 const cassInfo = require('./config/sqlConfig.js');
 const cassandra = require('cassandra-driver');
-const client = new cassandra.Client({ contactPoints: ['localhost'], localDataCenter: 'datacenter1', keyspace: 'songdisplay' });
+const client = new cassandra.Client({ contactPoints: ['3.13.205.192'], localDataCenter: 'us-east-2', keyspace: 'songdisplay' });
  
 
 // Get specific song
