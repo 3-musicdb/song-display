@@ -37,6 +37,10 @@ function shouldCompress(req, res) {
   return compression.filter(req, res);
 }
 
+app.get('/loaderio-a9ea67f314db9b6614c8f41219ad33bd/', (req, res) => {
+   res.sendFile('/home/ec2-user/song-display/songDisplayComponent/public/loaderio-a9ea67f314db9b6614c8f41219ad33bd.txt');
+});
+
 app.get('/loaderio-3000a7fe72c6414b3a1eb2ee85ccff2c/', (req, res) => {
   res.sendFile('/home/ec2-user/song-display/songDisplayComponent/public/loaderio-3000a7fe72c6414b3a1eb2ee85ccff2c.txt');
 });
