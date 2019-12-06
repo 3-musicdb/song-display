@@ -10,11 +10,14 @@ implementing backend optimization for song-display module
 
 ## Table of Contents
 1. [Requirements](#requirements)
+2. [Development](#development)
+3. [API](#API)
 
 ## Requirements
 - Node v8.15.x
 - npm v6.4.x
 
+## Development
 ### Installing Dependencies
 From within the root directory
 
@@ -43,7 +46,7 @@ npm start
 
 URIs relative to https://localhost:5002/
 
-##CRUD APIs:
+##API:
 
 Request Body is accepted in JSON format.
 
